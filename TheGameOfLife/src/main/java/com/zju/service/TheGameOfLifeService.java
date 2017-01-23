@@ -8,8 +8,16 @@ import java.util.Random;
 
 @Service
 public class TheGameOfLifeService {
+    //方向数组
     private int[] direct = {-1, 0, 1};
 
+    /**
+     * 给定阵列和坐标,计算坐标点的邻居存活数量
+     * @param now 细胞阵列
+     * @param x 横坐标
+     * @param y 纵坐标
+     * @return
+     */
     private int countLiveNeighbor(CellularArray now, int x, int y) {
         int count = 0;
         for (int i = 0; i < 3; ++i) {
@@ -25,6 +33,11 @@ public class TheGameOfLifeService {
         return count;
     }
 
+    /**
+     * 给定细胞阵列,生成下一代的细胞阵列
+     * @param now 细胞阵列
+     * @return
+     */
     public CellularArray generate(CellularArray now) {
         if (null == now) {
             return null;
@@ -46,6 +59,11 @@ public class TheGameOfLifeService {
         return next;
     }
 
+    /**
+     * 给定细胞阵列,产生随机结果
+     * @param cellularArray 细胞阵列
+     * @return
+     */
     public CellularArray randInit(CellularArray cellularArray) {
         if (null == cellularArray) return null;
         Random r = new Random();
@@ -59,6 +77,11 @@ public class TheGameOfLifeService {
         return cellularArray;
     }
 
+    /**
+     * 给定细胞阵列,产生初始化结果
+     * @param cellularArray
+     * @return
+     */
     public CellularArray emptyInit(CellularArray cellularArray) {
         if (null == cellularArray) return null;
         for (int i = 0; i < cellularArray.getRow(); ++i) {
