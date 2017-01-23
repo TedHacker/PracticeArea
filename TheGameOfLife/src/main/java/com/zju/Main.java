@@ -29,9 +29,3 @@ public class Main {
         print(cellularArray);
     }
 }
-/**
- * 难点:
- * 如何把数组传给后端 --json
- * spring mvc @request 接收json  --配置
- * js回调有时间差,导致参数null --修改写回调函数里面
- */
