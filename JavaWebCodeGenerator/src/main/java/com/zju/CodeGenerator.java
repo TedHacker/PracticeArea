@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.List;
 
 /**
- *
+ * 代码生成器
  */
 public class CodeGenerator {
     public static void generate(Configuration configuration) {
@@ -28,7 +28,7 @@ public class CodeGenerator {
 //        }
 //        ClassLoader parent = Thread.currentThread().getContextClassLoader();
 //        URLClassLoader ucl = new URLClassLoader(new URL[]{url}, parent);
-        Connection connection;
+        Connection connection=null;
         ResultSet rs=null;
         DatabaseMetaData databaseMetaData=null;
         List<TableColumn> columns= Lists.newArrayList();
@@ -36,8 +36,10 @@ public class CodeGenerator {
         JavaTypeResolver javaTypeResolver=new JavaTypeResolver();
         try {
             Class.forName(configuration.getDriverClass());
+            //获取数据库连接
             connection = DriverManager.getConnection(configuration.getConnectionURL(), configuration.getUserId(), configuration.getPassword());
             databaseMetaData = connection.getMetaData();
+            //获取表结构信息
             rs = databaseMetaData.getColumns("", "", configuration.getTableName(), "%");
             boolean supportsIsAutoIncrement = false;
             boolean supportsIsGeneratedColumn = false;
@@ -56,8 +58,7 @@ public class CodeGenerator {
                 column.setJdbcType(rs.getInt("DATA_TYPE"));
                 column.setLength(rs.getInt("COLUMN_SIZE"));
                 column.setActualColumnName(rs.getString("COLUMN_NAME"));
-                column
-                        .setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
+                column.setNullable(rs.getInt("NULLABLE") == DatabaseMetaData.columnNullable);
                 column.setScale(rs.getInt("DECIMAL_DIGITS"));
                 column.setRemarks(rs.getString("REMARKS"));
                 column.setDefaultValue(rs.getString("COLUMN_DEF"));
@@ -82,12 +83,19 @@ public class CodeGenerator {
                 try {
                     rs.close();
                 } catch (SQLException e) {
-
+                    System.out.println("ResultSet 关闭失败");
+                }
+            }
+            if(connection!=null){
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.out.println("Connection 关闭失败");
                 }
             }
         }
         try {
-            FileGenerator.writeFile(configuration,columns);
+            FileGenerator.writeFile(configuration,columns);//写文件
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TemplateException e) {

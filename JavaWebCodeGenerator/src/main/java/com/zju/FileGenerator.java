@@ -16,18 +16,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author ted on 17/3/8.
+ * 文件生成器
  */
 public class FileGenerator {
 
     private static String sf = "%s/%s/%s%s";
 
     public static void writeFile(com.zju.meta.Configuration configuration, List<TableColumn> columns) throws IOException, TemplateException {
-        //获取项目根目录路径
         File r=new File("");
+        //测试环境获取项目根目录路径
         //String path=Class.class.getClass().getResource("/").getPath();
+        //Jar包获取根目录路径
         String path=r.getAbsolutePath();
-        System.out.println("path:"+path);
+        //System.out.println("path:"+path);
         Configuration cfg = new Configuration();
         cfg.setDirectoryForTemplateLoading(new File(path + "/ftl")); //需要文件夹绝对路径
         cfg.setDefaultEncoding("UTF-8");
@@ -36,12 +37,12 @@ public class FileGenerator {
         root.put("configuration", configuration);
         root.put("columnList", columns);
         System.out.println(JSON.toJSONString(columns));
-        writeSingleFile(cfg, root, "DaoImpl.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "DaoImpl.java");
-        writeSingleFile(cfg, root, "Dao.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "Dao.java");
-        writeSingleFile(cfg, root, "Meta.ftl", configuration.getProjectPath(), configuration.getJavaModelPackage().replace(".", "/"), configuration.getDomainObjectName(), ".java");
+        writeSingleFile(cfg, root, "DaoImpl.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "DaoImpl.java",configuration.getOverwrite());
+        writeSingleFile(cfg, root, "Dao.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "Dao.java",configuration.getOverwrite());
+        writeSingleFile(cfg, root, "Meta.ftl", configuration.getProjectPath(), configuration.getJavaModelPackage().replace(".", "/"), configuration.getDomainObjectName(), ".java",configuration.getOverwrite());
     }
 
-    public static boolean writeSingleFile(Configuration cfg, Map root, String template, String projectPath, String packagePath, String fileName, String suffix) throws IOException, TemplateException {
+    public static boolean writeSingleFile(Configuration cfg, Map root, String template, String projectPath, String packagePath, String fileName, String suffix,Boolean overwrite) throws IOException, TemplateException {
         Template temp = cfg.getTemplate(template);
         File file = new File(String.format(sf, projectPath, packagePath, fileName, suffix));
         if (!file.getParentFile().exists()) {
@@ -50,11 +51,18 @@ public class FileGenerator {
                 return false;
             }
         }
-        if (file.createNewFile()) {
-            System.out.println(String.format("创建单个文件%s成功!", file.getPath()));
-        } else {
-            System.out.println(String.format("创建单个文件%s失败!", file.getPath()));
-            return false;
+        if(file.exists()){
+            if(!overwrite) {
+                System.out.println(String.format("创建单个文件%s失败! 文件已存在", file.getPath()));
+                return false;
+            }
+        }else {
+            if (file.createNewFile()) {
+                System.out.println(String.format("创建单个文件%s成功!", file.getPath()));
+            } else {
+                System.out.println(String.format("创建单个文件%s失败!", file.getPath()));
+                return false;
+            }
         }
         Writer out = null;
         try {

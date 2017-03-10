@@ -14,6 +14,7 @@ public class Configuration {
     private String projectPath;
     private String tableName;
     private String domainObjectName;
+    private Boolean overwrite;
 
     public Configuration() {
     }
@@ -98,19 +99,11 @@ public class Configuration {
         this.domainObjectName = domainObjectName;
     }
 
-    @Override
-    public String toString() {
-        return "Configuration{" +
-                "classPathEntry='" + classPathEntry + '\'' +
-                ", driverClass='" + driverClass + '\'' +
-                ", connectionURL='" + connectionURL + '\'' +
-                ", userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", javaModelPackage='" + javaModelPackage + '\'' +
-                ", sqlMappingPackage='" + sqlMappingPackage + '\'' +
-                ", projectPath='" + projectPath + '\'' +
-                ", tableName='" + tableName + '\'' +
-                ", domainObjectName='" + domainObjectName + '\'' +
-                '}';
+    public Boolean getOverwrite() {
+        return overwrite;
+    }
+
+    public void setOverwrite(Boolean overwrite) {
+        this.overwrite = overwrite;
     }
 }
