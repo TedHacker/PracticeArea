@@ -36,7 +36,6 @@ public class FileGenerator {
         Map root = new HashMap();
         root.put("configuration", configuration);
         root.put("columnList", columns);
-        System.out.println(JSON.toJSONString(columns));
         writeSingleFile(cfg, root, "DaoImpl.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "DaoImpl.java",configuration.getOverwrite());
         writeSingleFile(cfg, root, "Dao.ftl", configuration.getProjectPath(), configuration.getSqlMappingPackage().replace(".", "/"), configuration.getDomainObjectName(), "Dao.java",configuration.getOverwrite());
         writeSingleFile(cfg, root, "Meta.ftl", configuration.getProjectPath(), configuration.getJavaModelPackage().replace(".", "/"), configuration.getDomainObjectName(), ".java",configuration.getOverwrite());
