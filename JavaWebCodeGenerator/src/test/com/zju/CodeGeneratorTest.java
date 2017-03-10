@@ -14,7 +14,7 @@ public class CodeGeneratorTest {
     @Test
     public void testGenerate() throws Exception {
         File file=new File("src/test/resources/generatorConfig.properties");
-        Configuration configuration= ConfigurationParser.parseConfiguration(file);
+        Configuration configuration= ConfigurationParser.parseConfiguration(file,true);
         System.out.println(configuration);
         CodeGenerator.generate(configuration);
     }

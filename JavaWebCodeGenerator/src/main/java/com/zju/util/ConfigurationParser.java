@@ -23,7 +23,14 @@ public class ConfigurationParser {
     private static final String TABLE_NAME = "table.name";
     private static final String DOMAIN_OBJECT_NAME = "domain.object.name";
 
-    public static Configuration parseConfiguration(File inputFile) throws IOException {
+    /**
+     * 配置文件解析
+     * @param inputFile 配置文件
+     * @param overwrite 是否重写参数
+     * @return
+     * @throws IOException
+     */
+    public static Configuration parseConfiguration(File inputFile,Boolean overwrite) throws IOException {
         FileReader fr = new FileReader(inputFile);
         Properties prop = new Properties();
         prop.load(fr);
@@ -51,6 +58,7 @@ public class ConfigurationParser {
                 config.setDomainObjectName(prop.get(key).toString());
             }
         }
+        config.setOverwrite(overwrite);
         return config;
     }
 }

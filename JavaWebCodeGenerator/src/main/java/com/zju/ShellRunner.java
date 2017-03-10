@@ -14,17 +14,23 @@ import java.util.Map;
 public class ShellRunner {
 
     private static final String CONFIG_FILE = "-configfile"; //配置文件
+    private static final String OVERWRITE="-overwrite"; //是否重写文件
 
     public static void main(String[] args) throws IOException {
+        boolean overwrite=false;
         if (args.length == 0) {
             System.out.println("args is empty");
             System.exit(0);
             return;
         }
+        //命令参数
         Map<String, String> arguments = parseCommandLine(args);
         if (!arguments.containsKey(CONFIG_FILE)) {
             System.out.println("args do not contain configfile");
             return;
+        }
+        if(arguments.containsKey(OVERWRITE)){
+            overwrite=true;
         }
         String configfile = arguments.get(CONFIG_FILE);
         File configurationFile = new File(configfile);
@@ -32,8 +38,8 @@ public class ShellRunner {
             System.out.println("configfile is not exist");
             return;
         }
-        Configuration configuration= ConfigurationParser.parseConfiguration(configurationFile);
-        CodeGenerator.generate(configuration);
+        Configuration configuration= ConfigurationParser.parseConfiguration(configurationFile,overwrite);
+        CodeGenerator.generate(configuration);//生成代码
     }
 
     private static Map<String, String> parseCommandLine(String[] args) {
@@ -42,10 +48,13 @@ public class ShellRunner {
             if (CONFIG_FILE.equalsIgnoreCase(args[i])) {
                 if ((i + 1) < args.length) {
                     arguments.put(CONFIG_FILE, args[i + 1]);
+                    ++i;
                 } else {
                     System.out.println("args error");
                     System.exit(-1);
                 }
+            }else if(OVERWRITE.equalsIgnoreCase(args[i])){
+                arguments.put(OVERWRITE,"");
             }
         }
         return arguments;
