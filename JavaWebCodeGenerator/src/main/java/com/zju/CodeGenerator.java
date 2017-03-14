@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class CodeGenerator {
     public static void generate(Configuration configuration) {
+        System.out.println("开始连接数据库!");
 //        File file = new File(configuration.getClassPathEntry());
 //        if (!file.exists()) {
 //            throw new RuntimeException("Class not found:"+file.getPath());
@@ -94,6 +95,7 @@ public class CodeGenerator {
                 }
             }
         }
+        System.out.println("数据表信息解析成功!");
         try {
             FileGenerator.writeFile(configuration,columns);//写文件
         } catch (IOException e) {

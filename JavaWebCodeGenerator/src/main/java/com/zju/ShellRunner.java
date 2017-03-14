@@ -17,6 +17,7 @@ public class ShellRunner {
     private static final String OVERWRITE="-overwrite"; //是否重写文件
 
     public static void main(String[] args) throws IOException {
+        System.out.println("开始执行命令!");
         boolean overwrite=false;
         if (args.length == 0) {
             System.out.println("args is empty");
@@ -39,6 +40,7 @@ public class ShellRunner {
             return;
         }
         Configuration configuration= ConfigurationParser.parseConfiguration(configurationFile,overwrite);
+        System.out.println("配置文件解析成功!");
         CodeGenerator.generate(configuration);//生成代码
     }
 

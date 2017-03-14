@@ -23,6 +23,7 @@ public class FileGenerator {
     private static String sf = "%s/%s/%s%s";
 
     public static void writeFile(com.zju.meta.Configuration configuration, List<TableColumn> columns) throws IOException, TemplateException {
+        System.out.println("开始生成文件!");
         File r=new File("");
         //测试环境获取项目根目录路径
         //String path=Class.class.getClass().getResource("/").getPath();
@@ -68,6 +69,7 @@ public class FileGenerator {
             out = new FileWriter(file);
             temp.process(root, out);
             out.flush();
+            System.out.println(String.format(sf+"完成.", projectPath, packagePath, fileName, suffix));
         } catch (Exception e) {
             System.out.println(String.format("写入%s失败!", file.getPath()));
         } finally {
